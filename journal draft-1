@@ -1,0 +1,45 @@
+import java.util.Date;
+
+public class JournalEntry {
+    private Date entryDate;
+    private String content;
+
+    // Constructor
+    public JournalEntry(Date entryDate, String content) {
+        this.entryDate = entryDate;
+        this.content = content;
+    }
+
+    // Getters and setters
+    public Date getEntryDate() {
+        return entryDate;
+    }
+
+    public void setEntryDate(Date entryDate) {
+        this.entryDate = entryDate;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "Journal Entry Date: " + entryDate + "\nContent:\n" + content;
+    }
+
+    public static void main(String[] args) {
+        // Create a journal entry
+        Date currentDate = new Date();
+        String entryContent = "This is my journal entry for today. I had a great day and learned something new.";
+
+        JournalEntry myEntry = new JournalEntry(currentDate, entryContent);
+
+        // Display the journal entry
+        System.out.println(myEntry);
+    }
+}
