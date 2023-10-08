@@ -1,16 +1,17 @@
+import java.io.*;
 import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Scanner;
 
 public class JournalEntry {
     private Date entryDate;
     private String content;
 
-    // Constructor
     public JournalEntry(Date entryDate, String content) {
         this.entryDate = entryDate;
         this.content = content;
     }
 
-    // Getters and setters
     public Date getEntryDate() {
         return entryDate;
     }
@@ -29,17 +30,54 @@ public class JournalEntry {
 
     @Override
     public String toString() {
-        return "Journal Entry Date: " + entryDate + "\nContent:\n" + content;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+        return "Journal Entry Date: " + dateFormat.format(entryDate) + "\nContent:\n" + content;
     }
 
     public static void main(String[] args) {
-        // Create a journal entry
-        Date currentDate = new Date();
-        String entryContent = "This is my journal entry for today. I had a great day and learned something new.";
+        Scanner scanner = new Scanner(System.in);
 
+        // User inputs content
+        System.out.println("Enter your journal entry:");
+        String entryContent = scanner.nextLine();
+
+        // Create a journal entry with the current date and user input
+        Date currentDate = new Date();
         JournalEntry myEntry = new JournalEntry(currentDate, entryContent);
 
         // Display the journal entry
+        System.out.println("\nYour Journal Entry:");
         System.out.println(myEntry);
+
+        // Save the journal entry to a file
+        try {
+            PrintWriter writer = new PrintWriter(new FileWriter("journal.txt", true));
+            writer.println(myEntry.toString());
+            writer.println("------------------------------");
+            writer.close();
+            System.out.println("\nJournal entry saved successfully.");
+        } catch (IOException e) {
+            System.err.println("Error: Unable to save journal entry.");
+        }
+
+        // Option to view previous entries
+        System.out.println("\nDo you want to view previous entries? (yes/no)");
+        String viewChoice = scanner.nextLine();
+        if (viewChoice.equalsIgnoreCase("yes")) {
+            System.out.println("\nPrevious Journal Entries:");
+
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader("journal.txt"));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+                reader.close();
+            } catch (IOException e) {
+                System.err.println("Error: Unable to read previous journal entries.");
+            }
+        }
+
+        scanner.close();
     }
 }
