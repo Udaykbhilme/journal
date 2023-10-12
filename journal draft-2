@@ -1,0 +1,58 @@
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class JournalApp {
+
+    public static void main(String[] args) {
+        if (args.length < 3) {
+            System.out.println("Usage: java JournalApp <entry> <file_path> <image_path>");
+            return;
+        }
+
+        String entryText = args[0];
+        String filePath = args[1];
+        String imagePath = args[2];
+
+        saveJournalEntry(entryText, filePath, imagePath);
+    }
+
+    public static void saveJournalEntry(String entryText, String filePath, String imagePath) {
+        try {
+            String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+            String journalFileName = "journal_" + timestamp + ".txt";
+
+            // Save the journal entry text to a file
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(journalFileName))) {
+                writer.write(entryText);
+                writer.newLine();
+                writer.write("Attached File: " + filePath);
+                writer.newLine();
+                writer.write("Attached Image: " + imagePath);
+                System.out.println("Journal entry saved to " + journalFileName);
+            }
+
+            // Save the attached file
+            try (InputStream in = new FileInputStream(filePath);
+                 OutputStream out = new FileOutputStream(journalFileName, true)) {
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, length);
+                }
+            }
+
+            // Save the attached image
+            try (InputStream in = new FileInputStream(imagePath);
+                 OutputStream out = new FileOutputStream(journalFileName, true)) {
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, length);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
