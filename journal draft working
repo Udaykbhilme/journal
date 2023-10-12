@@ -1,0 +1,104 @@
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+
+public class JournalApp {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to the Journal App!");
+
+        while (true) {
+            System.out.println("\nSelect an option:");
+            System.out.println("1. Add a new journal entry");
+            System.out.println("2. View previous journal entries");
+            System.out.println("3. Exit");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter your journal entry:");
+                    String entryContent = scanner.nextLine();
+
+                    // Create a journal entry with the current date and user input
+                    Date currentDate = new Date();
+                    JournalEntry myEntry = new JournalEntry(currentDate, entryContent);
+
+                    // Display the journal entry
+                    System.out.println("\nYour Journal Entry:");
+                    System.out.println(myEntry);
+
+                    // Option to attach a file
+                    System.out.println("\nDo you want to attach a file? (yes/no)");
+                    String attachChoice = scanner.nextLine();
+                    if (attachChoice.equalsIgnoreCase("yes")) {
+                        System.out.println("Enter the path of the file to attach:");
+                        String filePath = scanner.nextLine();
+                        myEntry.setAttachment(filePath);
+                    }
+
+                    // Save the journal entry to a file
+                    myEntry.saveToFile("journal.txt");
+                    System.out.println("\nJournal entry saved successfully.");
+                    break;
+
+                case 2:
+                    System.out.println("\nPrevious Journal Entries:");
+
+                    try {
+                        BufferedReader reader = new BufferedReader(new FileReader("journal.txt"));
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            System.out.println(line);
+                        }
+                        reader.close();
+                    } catch (IOException e) {
+                        System.err.println("Error: Unable to read previous journal entries.");
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("Goodbye!");
+                    scanner.close();
+                    System.exit(0);
+                    break;
+
+                default:
+                    System.out.println("Invalid option. Please choose 1, 2, or 3.");
+            }
+        }
+    }
+}
+
+class JournalEntry {
+    private Date entryDate;
+    private String content;
+    private String attachment;
+
+    public JournalEntry(Date entryDate, String content) {
+        this.entryDate = entryDate;
+        this.content = content;
+    }
+
+    public void setAttachment(String filePath) {
+        this.attachment = filePath;
+    }
+
+    public void saveToFile(String filename) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename, true)) {
+            writer.println("Journal Entry Date: " + dateFormat.format(entryDate));
+            writer.println("Content:\n" + content);
+            if (attachment != null) {
+                writer.println("Attached File: " + attachment);
+            }
+            writer.println("------------------------------");
+        } catch (IOException e) {
+            System.err.println("Error: Unable to save journal entry.");
+        }
+    }
+}
