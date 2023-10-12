@@ -17,22 +17,16 @@ public class JournalApp {
             System.out.println("3. Exit");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
                     System.out.println("Enter your journal entry:");
                     String entryContent = scanner.nextLine();
-
-                    // Create a journal entry with the current date and user input
                     Date currentDate = new Date();
                     JournalEntry myEntry = new JournalEntry(currentDate, entryContent);
-
-                    // Display the journal entry
                     System.out.println("\nYour Journal Entry:");
                     System.out.println(myEntry);
-
-                    // Option to attach a file
                     System.out.println("\nDo you want to attach a file? (yes/no)");
                     String attachChoice = scanner.nextLine();
                     if (attachChoice.equalsIgnoreCase("yes")) {
@@ -40,8 +34,6 @@ public class JournalApp {
                         String filePath = scanner.nextLine();
                         myEntry.setAttachment(filePath);
                     }
-
-                    // Save the journal entry to a file
                     myEntry.saveToFile("journal.txt");
                     System.out.println("\nJournal entry saved successfully.");
                     break;
