@@ -1,0 +1,37 @@
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class JournalEntry {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Welcome to your journal.");
+        
+        System.out.print("Enter the title of your entry: ");
+        String title = scanner.nextLine();
+        
+        System.out.print("Enter your journal entry: ");
+        String entry = scanner.nextLine();
+        
+        // Store the entry in a text file
+        try {
+            FileWriter fileWriter = new FileWriter("journal.txt", true); // "true" for append mode
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            
+            bufferedWriter.write("Title: " + title);
+            bufferedWriter.newLine();
+            bufferedWriter.write("Entry: " + entry);
+            bufferedWriter.newLine();
+            bufferedWriter.newLine(); // Add a blank line to separate entries
+            bufferedWriter.close();
+            
+            System.out.println("Your entry has been saved.");
+        } catch (IOException e) {
+            System.err.println("An error occurred while saving the journal entry: " + e.getMessage());
+        }
+        
+        scanner.close();
+    }
+}
