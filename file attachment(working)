@@ -1,0 +1,20 @@
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import java.io.File;
+public class amazon {
+    public static void main(String[]args){
+JFileChooser fc = new JFileChooser();
+fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+fc.setCurrentDirectory(new File(System.getProperty("user.home")));
+
+int result = fc.showOpenDialog(new JFrame());
+
+if(result == JFileChooser.APPROVE_OPTION){
+    File selectedFile = fc.getSelectedFile();
+    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+
+}else if (result == JFileChooser.CANCEL_OPTION){
+    System.out.println("Operation canceled by you bro.");
+}
+    }
+}
