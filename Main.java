@@ -23,8 +23,7 @@ public class Main {
                 System.out.println("A Minimal Journal Management System");
                 System.out.println("1. Add Entry");
                 System.out.println("2. List Entries");
-                System.out.println("3. View Entry by Title");
-                System.out.println("4. Exit");
+                System.out.println("3. Exit");
                 System.out.print("Enter your choice: ");
                 boolean f=false;
                 int choice = scanner.nextInt();
@@ -60,50 +59,10 @@ public class Main {
                             break;
 
                         case 3:
-                            scanner.nextLine(); // Consume the newline
-                            System.out.print("Enter the title to search for: ");
-                            String searchTitle = scanner.nextLine();
-
-                            File[] files = new File(".").listFiles();
-                            boolean found = false;
-
-                            try
-                            {
-                                {
-                                    for (File file : files)
-                                    {
-                                        if (file.getName().startsWith("journal_") && file.getName().contains(searchTitle))
-                                        {
-                                            found = true;
-
-                                            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                                                String line;
-                                                while ((line = reader.readLine()) != null)
-                                                {
-                                                    System.out.println(line);
-                                                }
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                                System.err.println("Failed to read the entry for the specified title.");
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            catch(NullPointerException np)
-                            {
-                                np.printStackTrace();
-                            }
-
-                            if (!found)
-                            {
-                                System.out.println("No entry found for the specified title.");
-                            }
-                            break;
-
-                        case 4:
                             scanner.close();
-                            System.out.println("Goodbye!");
+                            System.out.println("Thank you for using the application.");
+                            System.out.println("See you soon.....");
+                            System.out.println("BYE BYE !!");
                             System.exit(0);
 
                         default:
@@ -123,8 +82,5 @@ public class Main {
         {
             e.printStackTrace();
         }
-        System.out.println("Thank you for using the application.");
-        System.out.println("See you soon.....");
-        System.out.println("BYE BYE !!");
     }
 }
