@@ -35,11 +35,19 @@ public class Main {
                     {
                         case 1:
                             // Entry creation logic remains the same
-                            scanner.nextLine(); // Consume the newline
                             System.out.print("Enter title: ");
                             String title = scanner.nextLine();
-                            System.out.print("Enter content: ");
-                            String content = scanner.nextLine();
+
+                            System.out.println("Enter content (Press Enter twice to finish):");
+                            StringBuilder contentBuilder = new StringBuilder();
+                            String line;
+
+                            while (!(line = scanner.nextLine()).isEmpty()) {
+                                contentBuilder.append(line).append(System.lineSeparator());
+                            }
+
+                            String content = contentBuilder.toString();
+
                             JournalEntry entry = new JournalEntry(currentDate,title, content);
                             EntryToDB.InsertToDB(entry);
                             System.out.println("Entry added successfully.");
@@ -53,6 +61,7 @@ public class Main {
                             for (JournalEntry e : entries)
                             {
                                 System.out.println("Title: " + e.getTitle());
+                                System.out.println("Date: " + e.getDate());
                                 System.out.println("Content: " + e.getContent());
                                 System.out.println();
                             }
@@ -71,6 +80,7 @@ public class Main {
                 }
                 catch(InputMismatchException ipm)
                 {
+                    ipm.printStackTrace();
                     System.out.println("Something went wrong.....");
                     System.out.println("Please try again");
                 }
